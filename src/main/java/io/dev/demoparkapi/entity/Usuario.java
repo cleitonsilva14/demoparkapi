@@ -54,14 +54,10 @@ public class Usuario implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
+    public int hashCode() { return Objects.hashCode(id); }
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                '}';
+        return "Usuario{" + "id=" + id + '}';
     }
 }
