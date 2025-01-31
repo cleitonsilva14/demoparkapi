@@ -4,10 +4,8 @@ import io.dev.demoparkapi.entity.Usuario;
 import io.dev.demoparkapi.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -31,10 +29,22 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario editarSenha(Long id, String password) {
+    public Usuario editarSenha(Long id, String senhaAtual, String novaSenha, String confirmaSenha) {
+
+        if(!novaSenha.equals(confirmaSenha)){
+            throw new RuntimeException("Nova senha não confere!");
+        }
+
         Usuario user = buscarPorId(id);
-        user.setPassword(password);
+
+        if(!user.getPassword().equals(senhaAtual)){
+            throw new RuntimeException("Sua senha atual não confere!");
+        }
+
+        user.setPassword(novaSenha);
+
         return user;
+
     }
 
     @Transactional(readOnly = true)
