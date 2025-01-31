@@ -3,6 +3,9 @@ package io.dev.demoparkapi.web.controller;
 
 import io.dev.demoparkapi.entity.Usuario;
 import io.dev.demoparkapi.service.UsuarioService;
+import io.dev.demoparkapi.web.dto.UsuarioCreateDto;
+import io.dev.demoparkapi.web.dto.UsuarioResponseDto;
+import io.dev.demoparkapi.web.dto.mapper.UsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,9 +23,9 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<Usuario> create(@RequestBody Usuario usuario){
-        Usuario user = usuarioService.salvar(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<UsuarioResponseDto> create(@RequestBody UsuarioCreateDto createDto){
+        Usuario user = usuarioService.salvar(UsuarioMapper.toUsuario(createDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(user));
     }
 
     @GetMapping("/{id}")

@@ -2,10 +2,6 @@ package io.dev.demoparkapi.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -28,7 +24,7 @@ public class Usuario implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 25)
-    private Role role;
+    private Role role = Role.ROLE_CLIENTE;
 
     @Column(name = "data_criacao")
     private LocalDateTime dataCriacao;
