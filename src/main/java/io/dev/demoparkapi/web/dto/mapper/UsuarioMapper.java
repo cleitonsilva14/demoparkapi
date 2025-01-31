@@ -7,6 +7,9 @@ import io.dev.demoparkapi.web.dto.UsuarioResponseDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class UsuarioMapper {
 
     public static Usuario toUsuario(UsuarioCreateDto createDto){
@@ -23,6 +26,10 @@ public class UsuarioMapper {
         );
 
         return mapper.map(usuario, UsuarioResponseDto.class);
+    }
+
+    public static List<UsuarioResponseDto> toListDto(List<Usuario> usuarios){
+        return usuarios.stream().map(user -> toDto(user)).collect(Collectors.toList());
     }
 
 
