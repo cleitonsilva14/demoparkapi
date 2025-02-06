@@ -1,6 +1,7 @@
 package io.dev.demoparkapi.service;
 
 import io.dev.demoparkapi.entity.Usuario;
+import io.dev.demoparkapi.exception.EntityNotFoundException;
 import io.dev.demoparkapi.exception.UsernameUniqueViolationException;
 import io.dev.demoparkapi.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class UsuarioService {
         try {
             return usuarioRepository.save(usuario);
         }catch (DataIntegrityViolationException ex){
-            throw new UsernameUniqueViolationException(String.format("Username {%s} já cadastrado", usuario.getUsername()));
+            throw new UsernameUniqueViolationException(String.format("Username [%s] já cadastrado", usuario.getUsername()));
         }
 
 
@@ -31,9 +32,14 @@ public class UsuarioService {
 
     @Transactional(readOnly = true) // exclusivo para consulta de dados
     public Usuario buscarPorId(Long id) {
+
+
+
         return usuarioRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Usuário não encontrado!")
+                () -> new EntityNotFoundException(String.format("Usuário id=%s não encontrado!", id))
         );
+
+
     }
 
     @Transactional
