@@ -35,33 +35,13 @@ public class UsuarioController {
             summary = "Criar um novo usuário",
             description = "Endpoint responsável para a criação de um novo usuário",
             responses = {
-                    @ApiResponse(
-                            responseCode = "201",
-                            description = "Criado com sucesso",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(
-                                            implementation = UsuarioResponseDto.class
-                                    )
-                            )
+                    @ApiResponse(responseCode = "201", description = "Criado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = UsuarioResponseDto.class))),
+                    @ApiResponse(responseCode = "409", description = "Usuário já está cadastrado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))
                     ),
-                    @ApiResponse(
-                            responseCode = "409",
-                            description = "Usuário já está cadastrado",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(
-                                            implementation = ErrorMessage.class
-                                    )
-                            )
-
-                    ),
-                    @ApiResponse(
-                            responseCode = "422",
-                            description = "Dados não processados, devido estarem inválidos!",
-                            content = @Content(mediaType = "application/json",
-                                    schema = @Schema(
-                                            implementation = ErrorMessage.class
-                                    )
-                            )
+                    @ApiResponse(responseCode = "422", description = "Dados não processados, devido estarem inválidos!",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))
                     )
             }
     )
@@ -102,6 +82,18 @@ public class UsuarioController {
 
     }
 
+    @Operation(summary = "Atualizar senha do usuário", description = "Atualizar senha",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Senha atualizada com sucesso!",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
+                    @ApiResponse(responseCode = "400", description = "Senha não confere!",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))
+                    ),
+                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado!",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))
+                    )
+            }
+    )
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updatePassword(@PathVariable Long id, @Valid @RequestBody UsuarioSenhaDto dto){
         Usuario user = usuarioService.editarSenha(id, dto.getSenhaAtual(), dto.getNovaSenha(), dto.getConfirmaSenha());
