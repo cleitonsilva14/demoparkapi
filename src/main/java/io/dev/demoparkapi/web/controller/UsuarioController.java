@@ -56,7 +56,7 @@ public class UsuarioController {
                     ),
                     @ApiResponse(
                             responseCode = "422",
-                            description = "Dados não processados, devido aos dados inválidos",
+                            description = "Dados não processados, devido estarem inválidos!",
                             content = @Content(mediaType = "application/json",
                                     schema = @Schema(
                                             implementation = ErrorMessage.class
@@ -71,6 +71,30 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(user));
     }
 
+    @Operation(
+            summary = "Obter um usuário pelo id",
+            description = "Endpoint responsável por obter um usuário pelo id",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Usuário encontrado com sucesso!",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            implementation = UsuarioResponseDto.class
+                                    )
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "Usuário com id informado não encontrado!",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            implementation = ErrorMessage.class
+                                    )
+                            )
+                    )
+            }
+    )
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDto> getById(@PathVariable Long id){
         Usuario user = usuarioService.buscarPorId(id);
