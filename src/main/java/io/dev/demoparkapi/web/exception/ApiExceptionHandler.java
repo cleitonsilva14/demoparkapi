@@ -1,7 +1,9 @@
 package io.dev.demoparkapi.web.exception;
 
 // org.springframework.web.bind.MethodArgumentNotValidException
+// org.springframework.dao.DataIntegrityViolationException
 
+import io.dev.demoparkapi.exception.UsernameUniqueViolationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,5 +28,22 @@ public class ApiExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.UNPROCESSABLE_ENTITY, "Campo(s) inválido(s)", result));
     }
+
+    @ExceptionHandler(UsernameUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> methodArgumentNotValidException(RuntimeException ex,
+                                                                         HttpServletRequest request){
+
+
+        log.error("API Error - ", ex);
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
+
+
+    }
+
+
 
 }

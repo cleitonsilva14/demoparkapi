@@ -1,9 +1,11 @@
 package io.dev.demoparkapi.service;
 
 import io.dev.demoparkapi.entity.Usuario;
+import io.dev.demoparkapi.exception.UsernameUniqueViolationException;
 import io.dev.demoparkapi.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +20,13 @@ public class UsuarioService {
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+        try {
+            return usuarioRepository.save(usuario);
+        }catch (DataIntegrityViolationException ex){
+            throw new UsernameUniqueViolationException(String.format("Username {%s} já cadastrado", usuario.getUsername()));
+        }
+
+
     }
 
     @Transactional(readOnly = true) // exclusivo para consulta de dados

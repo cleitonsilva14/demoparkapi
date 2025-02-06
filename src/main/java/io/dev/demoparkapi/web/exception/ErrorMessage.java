@@ -1,5 +1,6 @@
 package io.dev.demoparkapi.web.exception;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,9 @@ public class ErrorMessage {
     private String statusText;
     private String message;
 
+    // se o valor na resposta da request for null não será inserido no objeto da resposta
+    // Só é incluído na resposta se o valor não for NULL. Se for NULL não é incluído
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, String> errors;
 
     public ErrorMessage() {
