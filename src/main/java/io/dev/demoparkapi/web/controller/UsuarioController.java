@@ -101,6 +101,22 @@ public class UsuarioController {
 
     }
 
+    // Exercício: documentar endpoint getAll() usuários
+    @Operation(
+            summary = "Endpoint responsável por obter todos os usuários",
+            description = "Obter todos os usuários",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Usuários encontrados!",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(
+                                            implementation = UsuarioResponseDto.class
+                                    )
+                            )
+                    )
+            }
+    )
     @GetMapping
     public ResponseEntity<List<UsuarioResponseDto>> getAll(){
         List<Usuario> users = usuarioService.buscarTodos();
