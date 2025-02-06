@@ -2,6 +2,7 @@ package io.dev.demoparkapi.service;
 
 import io.dev.demoparkapi.entity.Usuario;
 import io.dev.demoparkapi.exception.EntityNotFoundException;
+import io.dev.demoparkapi.exception.PasswordInvalidException;
 import io.dev.demoparkapi.exception.UsernameUniqueViolationException;
 import io.dev.demoparkapi.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,13 +47,13 @@ public class UsuarioService {
     public Usuario editarSenha(Long id, String senhaAtual, String novaSenha, String confirmaSenha) {
 
         if(!novaSenha.equals(confirmaSenha)){
-            throw new RuntimeException("Nova senha não confere!");
+            throw new PasswordInvalidException("Nova senha não confere!");
         }
 
         Usuario user = buscarPorId(id);
 
         if(!user.getPassword().equals(senhaAtual)){
-            throw new RuntimeException("Sua senha atual não confere!");
+            throw new PasswordInvalidException("Sua senha atual não confere!");
         }
 
         user.setPassword(novaSenha);

@@ -4,6 +4,7 @@ package io.dev.demoparkapi.web.exception;
 // org.springframework.dao.DataIntegrityViolationException
 
 import io.dev.demoparkapi.exception.EntityNotFoundException;
+import io.dev.demoparkapi.exception.PasswordInvalidException;
 import io.dev.demoparkapi.exception.UsernameUniqueViolationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,19 @@ public class ApiExceptionHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, ex.getMessage()));
 
+    }
+
+    /*
+    * Exceptions PasswordInvalidException
+    * */
+    @ExceptionHandler(PasswordInvalidException.class)
+    public ResponseEntity<ErrorMessage> passwordInvalidException(RuntimeException ex, HttpServletRequest request){
+        log.error("Api Error - ", ex);
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON) // forçar retorno JSON
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 
 
