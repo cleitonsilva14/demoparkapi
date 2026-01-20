@@ -36,7 +36,11 @@ public class UsuarioIT {
         org.assertj.core.api.Assertions.assertThat(responseBody.getUsername()).isEqualTo("violet@springio.com");
         org.assertj.core.api.Assertions.assertThat(responseBody.getRole()).isEqualTo("CLIENTE");
 
+    }
 
+    @Test
+    public void createUsuario_ComUsernameInvalido_RetornarErrorMessageStatus422(){
+        
     }
 
 }
