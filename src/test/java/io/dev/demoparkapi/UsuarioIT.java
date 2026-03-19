@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.List;
+
 @Sql(scripts = "/sql/usuarios/usuarios-insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @Sql(scripts = "/sql/usuarios/usuarios-delete.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -145,7 +147,7 @@ public class UsuarioIT {
     }
 
     @Test
-    public void createUsuario_ComIdExistente_RetornarUsuarioComStatus200(){
+    public void buscarUsuario_ComIdExistente_RetornarUsuarioComStatus200(){
         UsuarioResponseDto responseBody = testClient
                 .get()
                 .uri("/api/v1/usuarios/100")
@@ -163,7 +165,7 @@ public class UsuarioIT {
     }
 
     @Test
-    public void createUsuario_ComIdInexistente_RetornarErrorMessageComStatus404(){
+    public void buscarUsuario_ComIdInexistente_RetornarErrorMessageComStatus404(){
         ErrorMessage responseBody = testClient
                 .get()
                 .uri("/api/v1/usuarios/0")
@@ -287,6 +289,24 @@ public class UsuarioIT {
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
         org.assertj.core.api.Assertions.assertThat(responseBody.getStatus()).isEqualTo(400);
 
+
+    }
+
+    // Tarefa
+
+    @Test
+    public void buscarUsuarios_ListarUsuarios_RetornarStatus200(){
+        List<UsuarioResponseDto> responseBody = testClient
+                .get()
+                .uri("/api/v1/usuarios")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(UsuarioResponseDto.class)
+                .returnResult()
+                .getResponseBody();
+
+        org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(responseBody.size()).isEqualTo(3);
 
     }
 
